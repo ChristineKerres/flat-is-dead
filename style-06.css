@@ -1,0 +1,225 @@
+/*Stopmotion while resizing window*/
+@font-face {
+    font-family: BIZUDMincho-Regular ;
+    src: url(fonts/BIZUDMincho-Regular.ttf);
+}
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: BIZUDMincho-Regular;
+    font-size:4vw;
+  }
+  @keyframes glowing {
+    0% {
+        text-shadow: 0 0 15px black;
+    }
+}
+  .overlay-text{
+    z-index: 10;
+    position: fixed;
+    top: 50%;
+    left: 20%;
+    animation: glowing 1700ms infinite;
+}
+  img {
+    margin: 0 auto;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+  }
+  .container {
+      display: flex;
+    }
+
+  /* --------------- */
+
+  .biscuit-01 {
+      display: flex;
+    }
+  .biscuit-02 {
+      opacity: 0;
+      transition: visibility 0s, opacity 0.3s linear;
+    }
+    
+  .biscuit-03 {
+      opacity: 0;
+      transition: visibility 0s, opacity 0.3s linear;
+    }
+    .biscuit-04 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-05 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-06 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-07 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-08 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-09 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-10 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-11 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-12 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-13 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-14 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-15 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+      .biscuit-16 {
+        opacity: 0;
+        transition: visibility 0s, opacity 0.3s linear;
+      }
+
+  @media screen and (max-width:1300px) {
+      .biscuit-02 {
+        opacity: 1;
+        position: absolute;
+      }
+    }
+    @media screen and (max-width:1250px) {
+      .biscuit-03 {
+        opacity: 1;
+        position: absolute;
+      }
+    }
+    @media screen and (max-width:1200px) {
+        .biscuit-04 {
+          opacity: 1;
+          position: absolute;
+        }
+      }  
+      @media screen and (max-width:1150px) {
+        .biscuit-05 {
+          opacity: 1;
+          position: absolute;
+        }
+      }  
+      @media screen and (max-width:1100px) {
+        .biscuit-06 {
+          opacity: 1;
+          position: absolute;
+        }
+      }  
+      @media screen and (max-width:1050px) {
+        .biscuit-07 {
+          opacity: 1;
+          position: absolute;
+        }
+      }  
+      @media screen and (max-width:1000px) {
+        .biscuit-08 {
+          opacity: 1;
+          position: absolute;
+        }
+      }
+      @media screen and (max-width:950px) {
+        .biscuit-09 {
+          opacity: 1;
+          position: absolute;
+        }
+      } 
+      @media screen and (max-width:900px) {
+        .biscuit-10 {
+          opacity: 1;
+          position: absolute;
+        }
+      } 
+      @media screen and (max-width:800px) {
+        .biscuit-11 {
+          opacity: 1;
+          position: absolute;
+        }
+      } 
+      @media screen and (max-width:700px) {
+        .biscuit-12 {
+          opacity: 1;
+          position: absolute;
+        }
+      } 
+      @media screen and (max-width:650px) {
+        .biscuit-13 {
+          opacity: 1;
+          position: absolute;
+        }
+      } 
+      @media screen and (max-width:600px) {
+        .biscuit-14 {
+          opacity: 1;
+          position: absolute;
+        }
+      }
+      @media screen and (max-width:550px) {
+        .biscuit-15 {
+          opacity: 1;
+          position: absolute;
+        }
+      }
+      @media screen and (max-width:500px) {
+        .biscuit-16 {
+          opacity: 1;
+          position: absolute;
+        }
+      }
+
+.antwort{
+  padding-left: 20px;
+  text-decoration:none !important;
+} 
+a{
+  font-size: 30px;
+  text-decoration: none;
+  -ms-user-select: None; 
+  -moz-user-select: None; 
+  -webkit-user-select: None; 
+  user-select: None; 
+  list-style: none;
+  color: black;
+} 
+.header{
+  display: flex !important;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-family: BIZUDMincho-Regular;
+  letter-spacing: 5px;
+  margin: 10px;
+  font-size: 15px;
+  z-index: 10;
+    position: fixed;
+    gap: 10px;
+    color:#006855;
+    text-shadow: 0 0 3px #fc83cf;
+}
