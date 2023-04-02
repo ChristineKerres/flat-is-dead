@@ -28,29 +28,7 @@ function closeInfobox(infobox) {
   overlay.classList.remove("active");
 }
 
-//// Headline Wechsel
-//Problem: nur einmaliger Austausch!
-/*var headline = document.getElementById("headline");
-
-function switchHeadline (){
-    headline.innerHTML = "your windowsize matters";
-    headline.innerHTML = "resize your browser now";
-}
-setInterval(switchHeadline, 5000);*/
-
-///Neuer Versuch: Headlinewechsel (funktioniert nicht!)
-/*function switchHeadline (){
-    var headlineListe = ["your windowsize matters", "resize your browser now"]
-    
-    y =  headline = document.getElementById("headline");
-    for (i = 0; i < y.length; i++){
-        y[i].headline.innerHTML = headlineListe[i%headlineListe.length]
-    }
-    }
-    setInterval(switchHeadline, 5000);
-*/
-
-///Neuer Versuch: Headline - automatische Slideshow
+///automatische Slideshow
 //https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_slideshow_auto
 let slideIndex = 0;
 showSlides();
@@ -69,49 +47,6 @@ function showSlides() {
   slides[slideIndex - 1].style.display = "block";
   setTimeout(showSlides, 5000); // Change image every 5 seconds
 }
-
-/////Neues Fenster in einer bestimmten Größe öffnen
-/*let newWindow;
-
-document.getElementById("openWin").onclick = function openWin() {
-  newWindow = window.open('index_02.html', "", "width=1000, height=400");
-}
-
-///Wie kann ich die Funktion nur einmal ausführen lassen?
-///funktioniert nicht!!!
-function notClickable(){
-    if (document.getElementById) {
-        var clickedButton = document.getElementById(weiterleitung);
-        clickedButton.style.display = (clickedButton.style.display=='block'?'none':'block');
-      }
-    if(!clickedLink) {
-        clickedLink = true;
-        return true;
-      }
-      else {
-        return false;
-      }
-}*/
-
-///////Fenstergröße beeinflusst Öffnen eines weiteren Fensters
-///funktioniert nicht!!!
-/*const windowHeight = window.innerHeight; //beachtet nicht resize!!!??
-const windowWidth = window.innerWidth;
-var heightSize = "40px";
-var widthSize = "681px";
-
-console.log(windowHeight);
-console.log(windowWidth);
-console.log(heightSize >= windowHeight);
-
-
-function showContent(){
-    if(heightSize >= windowHeight,  widthSize >= windowWidth) {
-        newWindow = window.open('index_02.html', "", "width=1000, height=400");
-    }
-}
-*/
-///Neuer Versuch
 
 //Check if window width is less than or equal to 600,then change bg
 document.onload = checkWidth();
