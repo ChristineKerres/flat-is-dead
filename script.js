@@ -1,5 +1,4 @@
 /////Infobox
-
 const openInfoboxButtons = document.querySelectorAll("[data-infobox-target]");
 const overlay = document.getElementById("overlay");
 
