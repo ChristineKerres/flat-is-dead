@@ -26,6 +26,12 @@
         font-weight: bold;
         color: green;
       }
+      #dataDisplay {
+        margin-top: 20px;
+        font-size: 16px;
+        color: blue;
+        font-family: monospace;
+      }
     </style>
   </head>
   <body>
@@ -33,6 +39,16 @@
     <p id="instruction">Click the button to start shake detection.</p>
     <button id="startShake">Start Shake Detection</button>
     <p id="message"></p>
+    <div id="dataDisplay">
+      <p><strong>Accelerometer Data:</strong></p>
+      <p>X: <span id="xValue">0</span></p>
+      <p>Y: <span id="yValue">0</span></p>
+      <p>Z: <span id="zValue">0</span></p>
+      <p><strong>Delta Values:</strong></p>
+      <p>Delta X: <span id="deltaX">0</span></p>
+      <p>Delta Y: <span id="deltaY">0</span></p>
+      <p>Delta Z: <span id="deltaZ">0</span></p>
+    </div>
 
     <script>
       let lastX, lastY, lastZ;
@@ -50,10 +66,13 @@
 
       // Function to handle the device motion event
       function handleDeviceMotion(event) {
-        // Log the raw accelerometer data to check if we are getting values
+        // Get the device's accelerometer data (Acceleration along X, Y, Z axes)
         const acceleration = event.accelerationIncludingGravity;
 
-        console.log('Device Motion Data:', acceleration); // Log the data to the console
+        // Update accelerometer data on the page
+        document.getElementById("xValue").innerText = acceleration.x.toFixed(2);
+        document.getElementById("yValue").innerText = acceleration.y.toFixed(2);
+        document.getElementById("zValue").innerText = acceleration.z.toFixed(2);
 
         // If the event data is not available, log a warning
         if (!acceleration) {
@@ -70,8 +89,10 @@
           const deltaY = Math.abs(currentY - lastY);
           const deltaZ = Math.abs(currentZ - lastZ);
 
-          // Log the delta values to see if the shake is being detected
-          console.log(`Delta Values: X=${deltaX}, Y=${deltaY}, Z=${deltaZ}`);
+          // Update delta values on the page
+          document.getElementById("deltaX").innerText = deltaX.toFixed(2);
+          document.getElementById("deltaY").innerText = deltaY.toFixed(2);
+          document.getElementById("deltaZ").innerText = deltaZ.toFixed(2);
 
           // If the change is above the threshold, consider it a shake
           if (deltaX > shakeThreshold || deltaY > shakeThreshold || deltaZ > shakeThreshold) {
