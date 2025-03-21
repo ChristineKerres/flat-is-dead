@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Whisper Detection</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        font-family: Arial, sans-serif;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 18px;
+        margin-top: 20px;
+        cursor: pointer;
+      }
+      #message {
+        font-size: 20px;
+        margin-top: 20px;
+        font-weight: bold;
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Whisper to the Device!</h1>
+    <p id="instruction">Click the button to start whisper detection.</p>
+    <button id="startWhisper">Start Whisper Detection</button>
+    <p id="message"></p>
+
+    <script>
+      let audioContext;
+      let analyser;
+      let microphone;
+      let bufferLength;
+      let dataArray;
+      let whisperThreshold = 10; // Low threshold for whisper detection (adjustable)
+      let isWhispering = false;
+
+      // Start microphone input and processing
+      function startWhisperDetection() {
+        document.getElementById("instruction").innerText =
+          "Whisper into the microphone!";
+        document.getElementById("message").innerText = "";
+
+        // Check for browser compatibility
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices
+            .getUserMedia({ audio: true })
+            .then(initAudioProcessing)
+            .catch((err) => {
+              console.error("Error accessing the microphone: ", err);
+              document.getElementById("message").innerText =
+                "Microphone access denied!";
+              document.getElementById("message").style.color = "red";
+            });
+        } else {
+          alert("Your browser does not support microphone access.");
+        }
+      }
+
+      // Initialize the audio context and start processing microphone input
+      function initAudioProcessing(stream) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 256; // Size of the FFT (Fast Fourier Transform)
+        bufferLength = analyser.frequencyBinCount;
+        dataArray = new Uint8Array(bufferLength);
+
+        // Set up the microphone input
+        microphone = audioContext.createMediaStreamSource(stream);
+        microphone.connect(analyser);
+
+        // Start monitoring the audio levels
+        monitorAudioLevels();
+      }
+
+      // Monitor the audio levels to detect a whisper
+      function monitorAudioLevels() {
+        analyser.getByteFrequencyData(dataArray);
+
+        // Calculate the average volume from the frequency data
+        let sum = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          sum += dataArray[i];
+        }
+
+        // Calculate the average
+        let averageVolume = sum / bufferLength;
+
+        // Check if the volume is below the whisper threshold
+        if (averageVolume < whisperThreshold && !isWhispering) {
+          isWhispering = true;
+          document.getElementById("message").innerText = "Whisper detected!";
+          document.getElementById("message").style.color = "red"; // Change color when whisper is detected
+        } else if (averageVolume >= whisperThreshold && isWhispering) {
+          isWhispering = false;
+          document.getElementById("message").innerText = "No whisper detected.";
+          document.getElementById("message").style.color = "green"; // Reset to green when no whisper
+        }
+
+        // Keep monitoring the audio levels
+        requestAnimationFrame(monitorAudioLevels);
+      }
+
+      // Event listener for the button to enable whisper detection
+      document
+        .getElementById("startWhisper")
+        .addEventListener("click", startWhisperDetection);
+    </script>
+  </body>
+</html>
