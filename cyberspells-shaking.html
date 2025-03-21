@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shake Detection</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+        font-family: Arial, sans-serif;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 18px;
+        margin-top: 20px;
+        cursor: pointer;
+      }
+      #message {
+        font-size: 20px;
+        margin-top: 20px;
+        font-weight: bold;
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Shake Your Phone!</h1>
+    <p id="instruction">Click the button to start shake detection.</p>
+    <button id="startShake">Start Shake Detection</button>
+    <p id="message"></p>
+
+    <script>
+      let lastX, lastY, lastZ;
+      let shakeThreshold = 15; // Adjust threshold for detecting shakes
+      let isShaking = false;
+
+      // Function to start shake detection
+      function startShakeDetection() {
+        document.getElementById("instruction").innerText =
+          "Shake your device to trigger the event!";
+
+        // Start monitoring the device motion
+        window.addEventListener("devicemotion", handleDeviceMotion);
+      }
+
+      // Function to handle the device motion event
+      function handleDeviceMotion(event) {
+        // Get the device's accelerometer data (Acceleration along X, Y, Z axes)
+        const acceleration = event.accelerationIncludingGravity;
+
+        // Log data to console for debugging
+        console.log(acceleration); // Log data to see if the event is firing and returning values
+
+        const currentX = acceleration.x;
+        const currentY = acceleration.y;
+        const currentZ = acceleration.z;
+
+        if (lastX && lastY && lastZ) {
+          const deltaX = Math.abs(currentX - lastX);
+          const deltaY = Math.abs(currentY - lastY);
+          const deltaZ = Math.abs(currentZ - lastZ);
+
+          // If the change is above the threshold, consider it a shake
+          if (
+            deltaX > shakeThreshold ||
+            deltaY > shakeThreshold ||
+            deltaZ > shakeThreshold
+          ) {
+            if (!isShaking) {
+              isShaking = true;
+              document.getElementById("message").innerText = "Shake detected!";
+              document.getElementById("message").style.color = "red"; // Change color to indicate shake
+            }
+          } else {
+            isShaking = false;
+          }
+        }
+
+        // Update the last known values
+        lastX = currentX;
+        lastY = currentY;
+        lastZ = currentZ;
+      }
+
+      // Event listener for the button to enable shake detection
+      document
+        .getElementById("startShake")
+        .addEventListener("click", startShakeDetection);
+    </script>
+  </body>
+</html>
