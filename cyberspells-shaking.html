@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shake Detection</title>
+    <title>Geolocation Movement Detection</title>
     <style>
       body {
         display: flex;
@@ -35,85 +35,71 @@
     </style>
   </head>
   <body>
-    <h1>Shake Your Phone!</h1>
-    <p id="instruction">Click the button to start shake detection.</p>
-    <button id="startShake">Start Shake Detection</button>
+    <h1>Track Your Movement!</h1>
+    <p id="instruction">Click the button to start tracking your movement.</p>
+    <button id="startTracking">Start Geolocation Tracking</button>
     <p id="message"></p>
     <div id="dataDisplay">
-      <p><strong>Accelerometer Data:</strong></p>
-      <p>X: <span id="xValue">0</span></p>
-      <p>Y: <span id="yValue">0</span></p>
-      <p>Z: <span id="zValue">0</span></p>
-      <p><strong>Delta Values:</strong></p>
-      <p>Delta X: <span id="deltaX">0</span></p>
-      <p>Delta Y: <span id="deltaY">0</span></p>
-      <p>Delta Z: <span id="deltaZ">0</span></p>
+      <p><strong>Geolocation Data:</strong></p>
+      <p>Latitude: <span id="latitude">0</span></p>
+      <p>Longitude: <span id="longitude">0</span></p>
+      <p><strong>Movement Detected:</strong></p>
+      <p>Delta Latitude: <span id="deltaLatitude">0</span></p>
+      <p>Delta Longitude: <span id="deltaLongitude">0</span></p>
     </div>
 
     <script>
-      let lastX, lastY, lastZ;
-      let shakeThreshold = 15; // Adjust threshold for detecting shakes
-      let isShaking = false;
+      let lastLatitude, lastLongitude;
+      let movementThreshold = 0.0001; // Change this value for sensitivity (degrees)
 
-      // Function to start shake detection
-      function startShakeDetection() {
+      // Function to start geolocation tracking
+      function startGeolocationTracking() {
         document.getElementById("instruction").innerText =
-          "Shake your device to trigger the event!";
+          "Move your device to track location changes!";
         
-        // Start monitoring the device motion
-        window.addEventListener("devicemotion", handleDeviceMotion);
+        // Start monitoring geolocation changes
+        if (navigator.geolocation) {
+          navigator.geolocation.watchPosition(handleGeolocationChange);
+        } else {
+          document.getElementById("message").innerText =
+            "Geolocation is not supported by this browser.";
+        }
       }
 
-      // Function to handle the device motion event
-      function handleDeviceMotion(event) {
-        // Get the device's accelerometer data (Acceleration along X, Y, Z axes)
-        const acceleration = event.accelerationIncludingGravity;
+      // Function to handle geolocation changes
+      function handleGeolocationChange(position) {
+        const currentLatitude = position.coords.latitude;
+        const currentLongitude = position.coords.longitude;
 
-        // Update accelerometer data on the page
-        document.getElementById("xValue").innerText = acceleration.x.toFixed(2);
-        document.getElementById("yValue").innerText = acceleration.y.toFixed(2);
-        document.getElementById("zValue").innerText = acceleration.z.toFixed(2);
+        // Display current geolocation data
+        document.getElementById("latitude").innerText = currentLatitude.toFixed(5);
+        document.getElementById("longitude").innerText = currentLongitude.toFixed(5);
 
-        // If the event data is not available, log a warning
-        if (!acceleration) {
-          console.warn('No accelerometer data available.');
-          return;
-        }
+        // If the previous position exists, calculate the change
+        if (lastLatitude !== undefined && lastLongitude !== undefined) {
+          const deltaLatitude = Math.abs(currentLatitude - lastLatitude);
+          const deltaLongitude = Math.abs(currentLongitude - lastLongitude);
 
-        const currentX = acceleration.x;
-        const currentY = acceleration.y;
-        const currentZ = acceleration.z;
+          // Display the delta (difference) in coordinates
+          document.getElementById("deltaLatitude").innerText = deltaLatitude.toFixed(5);
+          document.getElementById("deltaLongitude").innerText = deltaLongitude.toFixed(5);
 
-        if (lastX && lastY && lastZ) {
-          const deltaX = Math.abs(currentX - lastX);
-          const deltaY = Math.abs(currentY - lastY);
-          const deltaZ = Math.abs(currentZ - lastZ);
-
-          // Update delta values on the page
-          document.getElementById("deltaX").innerText = deltaX.toFixed(2);
-          document.getElementById("deltaY").innerText = deltaY.toFixed(2);
-          document.getElementById("deltaZ").innerText = deltaZ.toFixed(2);
-
-          // If the change is above the threshold, consider it a shake
-          if (deltaX > shakeThreshold || deltaY > shakeThreshold || deltaZ > shakeThreshold) {
-            if (!isShaking) {
-              isShaking = true;
-              document.getElementById("message").innerText = "Shake detected!";
-              document.getElementById("message").style.color = "red"; // Change color to indicate shake
-            }
-          } else {
-            isShaking = false;
+          // If the movement is above the threshold, consider it significant movement
+          if (deltaLatitude > movementThreshold || deltaLongitude > movementThreshold) {
+            document.getElementById("message").innerText = "Movement detected!";
+            document.getElementById("message").style.color = "red"; // Change color to indicate movement
           }
         }
 
-        // Update the last known values
-        lastX = currentX;
-        lastY = currentY;
-        lastZ = currentZ;
+        // Update the last known geolocation values
+        lastLatitude = currentLatitude;
+        lastLongitude = currentLongitude;
       }
 
-      // Event listener for the button to enable shake detection
-      document.getElementById("startShake").addEventListener("click", startShakeDetection);
+      // Event listener for the button to enable geolocation tracking
+      document
+        .getElementById("startTracking")
+        .addEventListener("click", startGeolocationTracking);
     </script>
   </body>
 </html>
